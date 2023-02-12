@@ -1,4 +1,3 @@
-
 application {
   config {
     baseName holdaroesefrontend,
@@ -16,17 +15,18 @@ application {
   }
   entities Foundation, Child, AdoptionRequest, Donation, Fosters
 }
+
 application {
   config {
-    baseName holdarose
-    applicationType microservice
-    packageName com.holdarose
-    authenticationType oauth2
-    databaseType mongodb
-    serviceDiscoveryType eureka
-    serverPort 8082
-    buildTool maven
-    jhiPrefix hRose,
+    baseName holdarose,
+    applicationType microservice,
+    packageName com.holdarose,
+    authenticationType oauth2,
+    databaseType mongodb,
+    serviceDiscoveryType eureka,
+    serverPort 8082,
+    buildTool maven,
+    jhiPrefix hRose
   }
   entities Foundation, Child, AdoptionRequest, Donation, Fosters
 }
@@ -51,6 +51,7 @@ entity Child {
 	age Integer
     image Blob
     gender Gender
+    status Status
 }
 
 entity AdoptionRequest {
@@ -71,17 +72,24 @@ entity Donation {
     donationAmount String
     paymentMethod PaymentMethod
 }
+
 enum PaymentMethod {
 	BY_HAND, THROUGH_BANK
 }
+
 enum Gender {
 	MALE, FEMALE, OTHER
 }
+enum Status{
+	AVAILABE, OCCUPIED, ADDOPTED
+}
+
 relationship OneToMany {
   Foundation to Donation
   Foundation to Child
   Child to Fosters
 }
+
 relationship OneToOne {
   AdoptionRequest to Child
 }
