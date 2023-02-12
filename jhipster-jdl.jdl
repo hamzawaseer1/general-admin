@@ -1,0 +1,93 @@
+
+application {
+  config {
+    baseName holdaroesefrontend,
+    applicationType gateway,
+    clientFramework angularX,
+    packageName com.gistraxx.frontend,
+    authenticationType oauth2,
+    databaseType mongodb,
+    serviceDiscoveryType eureka,
+    testFrameworks [gatling],
+    jhiPrefix gxR,
+    nativeLanguage en,
+    buildTool maven,
+    serverPort 8081
+  }
+  entities Foundation, Child, AdoptionRequest, Donation, Fosters
+}
+application {
+  config {
+    baseName holdarose
+    applicationType microservice
+    packageName com.holdarose
+    authenticationType oauth2
+    databaseType mongodb
+    serviceDiscoveryType eureka
+    serverPort 8082
+    buildTool maven
+    jhiPrefix hRose,
+  }
+  entities Foundation, Child, AdoptionRequest, Donation, Fosters
+}
+
+entity Foundation {
+	name String required unique
+    email String required unique
+    description String
+    location String
+}
+
+entity Fosters{
+	name String
+    cnic String
+    email String
+    jobTitle String
+    location String
+}
+
+entity Child {
+	name String
+	age Integer
+    image Blob
+    gender Gender
+}
+
+entity AdoptionRequest {
+	childName String required
+	cnic String required
+    fosterName String
+    fosterJobTitle String
+    fosterAddress String
+    approved Boolean
+    foundationName String required
+}
+
+entity Donation {
+	name String
+    cnic String required
+	address String
+    foundationName String
+    donationAmount String
+    paymentMethod PaymentMethod
+}
+enum PaymentMethod {
+	BY_HAND, THROUGH_BANK
+}
+enum Gender {
+	MALE, FEMALE, OTHER
+}
+relationship OneToMany {
+  Foundation to Donation
+  Foundation to Child
+  Child to Fosters
+}
+relationship OneToOne {
+  AdoptionRequest to Child
+}
+
+microservice Foundation, Child, AdoptionRequest, Donation, Fosters with holdarose
+
+service * with serviceImpl
+dto * with mapstruct
+paginate * with pagination
